@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: listing
+logging:
+  config: classpath:logback/logback-spring.xml
+
