@@ -1,10 +1,8 @@
 package com.products.listing.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -17,39 +15,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProductDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @NotBlank(message = "Product name is mandatory")
     private String name;
     @NotBlank(message = "Product description is mandatory")
+    @Column(length = 2000)
     private String description;
     @NotBlank(message = "Brand details is mandatory")
     private String brand;
     private String category;
     private String sku;
-    private int quantity;
-    private double price;
+    private Integer quantity;
+    private Double price;
     private String currency;
-
-    public void setName(String name) {
-        this.name = name;
-        createSku();
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-        createSku();
-    }
-
-    public void setId(int id) {
-        this.id = id;
-        createSku();
-    }
-
-    public void createSku() {
-        this.sku = this.name.substring(0, 3).toUpperCase() + "-" + this.brand.substring(0, 3).toUpperCase() + "-" + this.id;
-    }
 }

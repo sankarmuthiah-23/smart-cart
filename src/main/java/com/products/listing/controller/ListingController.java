@@ -1,5 +1,6 @@
 package com.products.listing.controller;
 
+import com.products.listing.dto.ProductEntries;
 import com.products.listing.model.ProductDetails;
 import com.products.listing.service.ListingService;
 import org.slf4j.Logger;
@@ -24,31 +25,27 @@ public class ListingController {
     }
 
     @GetMapping("/products/{productId}")
-    public ProductDetails getProductById(@PathVariable("productId") int id){
+    public ProductDetails getProductById(@PathVariable("productId") Long id){
             return listingService.getProductById(id);
     }
 
     @PostMapping("/create/products")
-    public List<ProductDetails> createProduct(@RequestBody List<ProductDetails> productDetails){
-        return listingService.createProducts();
+    public List<ProductDetails> createProduct(@RequestBody ProductEntries productDetailsList){
+        return listingService.createProducts(productDetailsList);
     }
 
-    @PutMapping("/update/products/{productId}")
-    public ProductDetails updateProduct(@PathVariable("productId") int id, @RequestBody List<ProductDetails> productDetails){
-            return listingService.updateProduct();
-    }
 
     @PutMapping("/bulkUpdate/Products")
-    public List<ProductDetails> updateProduct( @RequestBody List<ProductDetails> productDetails){
-       return listingService.updateProducts();
+    public List<ProductDetails> updateProduct( @RequestBody ProductEntries productDetails){
+       return listingService.updateProducts(productDetails);
     }
 
     @DeleteMapping("/delete/products/{productId}")
-    public void deleteProduct(@PathVariable("productId") int id){
+    public void deleteProduct(@PathVariable("productId") Long id){
         listingService.deleteProduct(id);
     }
 
-    @DeleteMapping("products/deleteAll")
+    @DeleteMapping("/products/deleteAll")
     public void deleteAllProducts(){
         listingService.deleteAllProducts();
     }
