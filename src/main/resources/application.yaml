@@ -1,6 +1,13 @@
 spring:
   application:
     name: listing
+  profiles:
+    active: dev
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 logging:
   config: classpath:logback/logback-spring.xml
 

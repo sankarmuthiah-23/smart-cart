@@ -1,5 +1,16 @@
 spring:
-  application:
-    name: listing
+  datasource:
+    url: jdbc:mysql://localhost:3306/ecart
+    username: root
+    password: Sankar@23
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update   # creates/updates tables automatically
+    show-sql: true       # prints SQL in console
+    properties:
+      hibernate:
+        format_sql: true # make SQL more readable in logs
 
 
