@@ -52,12 +52,18 @@ public class ListingService {
                     Optional<ProductDetails> existingProduct = productRepository.findById(productDetails.getId());
                     if (existingProduct.isPresent()) {
                         ProductDetails productToUpdate = existingProduct.get();
-                        productToUpdate.setName(productDetails.getName());
-                        productToUpdate.setBrand(productDetails.getBrand());
-                        productToUpdate.setDescription(productDetails.getDescription());
-                        productToUpdate.setCategory(productDetails.getCategory());
-                        productToUpdate.setPrice(productDetails.getPrice());
-                        productToUpdate.setQuantity(productDetails.getQuantity());
+                        String name = productDetails.getName()!= null ? productDetails.getName() : productToUpdate.getName();
+                        productToUpdate.setName(name);
+                        String brand = productDetails.getBrand()!= null ? productDetails.getBrand() : productToUpdate.getBrand();
+                        productToUpdate.setBrand(brand);
+                        String description = productDetails.getDescription() != null ? productDetails.getDescription() : productToUpdate.getDescription();
+                        productToUpdate.setDescription(description);
+                        String category = productDetails.getCategory() != null ? productDetails.getCategory() : productToUpdate.getCategory();
+                        productToUpdate.setCategory(category);
+                        Double price = productDetails.getPrice() != null ? productDetails.getPrice() : productToUpdate.getPrice();
+                        productToUpdate.setPrice(price);
+                        Integer quantity = productDetails.getQuantity() != null ? productDetails.getQuantity() : productToUpdate.getQuantity();
+                        productToUpdate.setQuantity(quantity);
                         updatedProductDetails.add(productToUpdate);
                     }
                 }

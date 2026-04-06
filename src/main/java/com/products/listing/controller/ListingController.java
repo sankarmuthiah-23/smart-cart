@@ -35,7 +35,7 @@ public class ListingController {
     }
 
 
-    @PutMapping("/bulkUpdate/Products")
+    @PutMapping("/update/products")
     public List<ProductDetails> updateProduct( @RequestBody ProductEntries productDetails){
        return listingService.updateProducts(productDetails);
     }
