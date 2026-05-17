@@ -1,6 +1,8 @@
 package com.products.listing.service;
 
 import com.products.listing.dto.ProductEntries;
+import com.products.listing.exception.CreateListingException;
+import com.products.listing.exception.ResourceNotFoundException;
 import com.products.listing.helper.ListingHelper;
 import com.products.listing.model.ProductDetails;
 import com.products.listing.repository.ProductRepository;
@@ -21,20 +23,32 @@ public class ListingService {
     private ListingHelper listingHelper;
 
 
-    public List<ProductDetails> createProducts(ProductEntries productDetailsList) {
-        if(productDetailsList.getProductDetailsList().isEmpty()){
-            return new ArrayList<ProductDetails>();
+    public List<ProductDetails> createProducts(ProductEntries productDetailsList) throws CreateListingException {
+        try {
+            List<ProductDetails> productDetails = productDetailsList.getProductDetailsList();
+            if (productDetails.isEmpty()) {
+                throw new CreateListingException("Product details list cannot be empty");
+            }
+            productDetails.forEach(
+                    productDetail -> listingHelper.generateSku(productDetail)
+            );
+
+            List<ProductDetails> savedProducts = productRepository.saveAll(productDetails);
+
+            return savedProducts;
+
+        } catch (Exception e) {
+            throw new CreateListingException("Failed to create product listing: " + e.getMessage());
         }
-        productDetailsList.getProductDetailsList().forEach(
-                productDetails -> listingHelper.generateSku(productDetails)
-        );
-        List<ProductDetails> savedProducts = productRepository.saveAll(productDetailsList.getProductDetailsList());
-        return savedProducts;
+
     }
 
-    public ProductDetails getProductById(Long id) {
+    public ProductDetails getProductById(Long id) throws ResourceNotFoundException {
         Optional<ProductDetails> productDetails = productRepository.findById(id);
-        return productDetails.isPresent() ? productDetails.get() : new ProductDetails();
+        if (!productDetails.isPresent()) {
+            throw new ResourceNotFoundException("Product with id " + id + " not found");
+        }
+        return productDetails.get();
     }
 
     public List<ProductDetails> getProducts() {
